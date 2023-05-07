@@ -1,0 +1,21 @@
+name: auto issue comment
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  add-comment:
+    if: github.event.issue.pull_request != null &&
+        github.event.issue.user.login != 'chroju' &&
+        contains(github.event.comment.body, 'No changes. Your infrastructure matches the configuration.')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add comment
+        uses: peter-evans/create-or-update-comment@5f728c3dae25f329afbe34ee4d08eef25569d79f
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            atlantis apply
