@@ -8,7 +8,8 @@ jobs:
   add-comment:
     if: github.event.issue.pull_request != null &&
         github.event.issue.user.login == 'chroju' &&
-        contains(github.event.comment.body, 'No changes. Your infrastructure matches the configuration.')
+        contains(github.event.comment.body, 'No changes. Your infrastructure matches the configuration.') &&
+        !contains(github.event.comment.body, 'Terraform will perform the following actions')
     runs-on: ubuntu-latest
     permissions:
       issues: write
